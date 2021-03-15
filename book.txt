@@ -1,0 +1,35 @@
+create table user(
+    ID varchar(5) primary key not null,
+    name varchar(20) not null,
+    gender varchar(1) check(gender in ('m','f')),
+    age numeric(2,0) check(age>17 and age<61),
+    key varchar(33) not null,
+    level varchar(6) not null check(level in ('super','normal')));
+
+create table backlist(
+    ISBN varchar(10,0) primary key not null,
+    book_name varchar(50) not null,
+    publisher varchar(50) not null,
+    author varchar(20) not null,
+    price numeric（5，2） not null check(price>0),
+    current_stock numeric(5) not null check(current_stock>=0));
+
+create table buylist(
+    ISBN varchar(10,0) primary key not null,
+    dealprice numeric(5,2) not null check(dealprice>0),
+    amount numeric(5,0) not null check(amount>0),
+    payment varchar(1) not null check(payment in ('y','n')),
+    state varchar(8) not null check(state in ('reserved','returned','arrived')),
+    foreign key(ISBN) references backlist);
+
+create table account(
+    bill_ID varchar(9) primary key not null,
+    type varchar(6) check(type in ('sell','buy_in')),
+    ISBN varchar(10,0),
+    book_name varchar(50),
+    fprice numeric(5,2) check(fprice>0),
+    ID varchar(5),
+    num numeric(5,0) check(num>0),
+    single_bill numeric(8,2),
+    total numeric(10,2),
+    foreign key(ISBN) references backlist);
